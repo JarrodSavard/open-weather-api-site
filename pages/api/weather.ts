@@ -77,7 +77,6 @@ export default async function handler(
 
     const response: AxiosResponse<WeatherData> = await axios.get<WeatherData>(`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${units}&appid=${process.env.OPENWEATHER_API_KEY}`);
     const weatherInfo: WeatherData = response.data;
-    console.log(weatherInfo);
     res.status(200).json( weatherInfo )
   }
   catch (error) {

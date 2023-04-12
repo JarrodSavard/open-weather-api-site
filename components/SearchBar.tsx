@@ -40,6 +40,11 @@ export const SearchBar = () => {
 
     // Start a new timer
     const newTimer = window.setTimeout(() => {
+      if (inputValue.trim().length === 0) {
+        setAvailableCities([])
+        return
+      }
+
       axios.post(`http://localhost:3000/api/avaliable-cities`, {
         city: inputValue.trim().toLowerCase(),
       })
