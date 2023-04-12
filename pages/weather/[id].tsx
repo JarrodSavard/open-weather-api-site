@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-
+import { GetServerSideProps } from 'next'
 
 interface WeatherData {
   cod: string;
@@ -61,27 +61,7 @@ interface WeatherData {
 }
 
 
-const WeatherPage = () => {
-  const router = useRouter();
-  const { id } = router.query;
-  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
-
-  useEffect(() => {
-    if (id) {
-      console.log(id);
-      axios.post<WeatherData>(`http://localhost:3000/api/weather`, {
-        "lat": "33.8358492",
-        "lon": "-118.3406288",
-        units: "celsius",
-      })
-        .then((response) => {
-          setWeatherData(response.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, [id]);
+const WeatherPage = ({weatherData}: {weatherData: WeatherData}) => {
 
   return (
     <>
@@ -92,7 +72,7 @@ const WeatherPage = () => {
       {weatherData ?
         <div>
           <h1>{weatherData.city.name}</h1>
-          <p>Temperature: {weatherData.list[0].main.temp}°{"celsius" == "celsius" ? "C" : "F"}</p>
+          <p>Temperature: {weatherData.list[0].main.temp}°F</p>
           <p>Description: {weatherData.city.population}</p>
         </div> :
         <p>Loading...</p>
@@ -100,6 +80,39 @@ const WeatherPage = () => {
     </div>
     </>
   );
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const { id, lat, lon, units } = query
+
+
+  if (id) {
+    try {
+      const response = await axios.post<WeatherData>('http://localhost:3000/api/weather', {
+        lat,
+        lon,
+        units
+      })
+
+      const weatherData = response.data
+
+      return {
+        props: {
+          weatherData,
+        },
+      }
+    } catch (error) {
+      console.error(error)
+
+      return {
+        notFound: true,
+      }
+    }
+  }
+
+  return {
+    notFound: true,
+  }
 }
 
 export default WeatherPage
