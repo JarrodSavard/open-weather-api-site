@@ -1,8 +1,13 @@
+import Head from 'next/head'
 import React from 'react'
 
 const defaultWeatherPage = () => {
   return (
-    <div></div>
+    <div>
+      <Head>
+        <title>Weather</title>
+      </Head>
+    </div>
   )
 }
 

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 
 interface WeatherData {
@@ -83,6 +84,10 @@ const WeatherPage = () => {
   }, [id]);
 
   return (
+    <>
+      <Head>
+        <title>Weather: {weatherData?.city.name}</title>
+      </Head>
     <div className='w-full text-center mt-10'>
       {weatherData ?
         <div>
@@ -93,6 +98,7 @@ const WeatherPage = () => {
         <p>Loading...</p>
       }
     </div>
+    </>
   );
 }
 

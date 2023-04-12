@@ -1,6 +1,11 @@
+import Head from "next/head";
 
 export default function Home() {
-      return (
+  return (
+    <>
+      <Head>
+        <title>Verify Test Application</title>
+      </Head>
     <div className="py-10 ">
       <header className="bg-white p-6 ">
         <h1 className="text-2xl font-bold text-gray-900">Verify Test Application</h1>
@@ -26,6 +31,7 @@ export default function Home() {
             </p>
         </main>
         </div>
+        </>
 
   );
 
