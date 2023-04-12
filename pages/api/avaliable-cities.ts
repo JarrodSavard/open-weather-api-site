@@ -27,7 +27,6 @@ export default async function handler(
     const city:string  = req.body.city
     const response: AxiosResponse<CityData> = await axios.get<CityData>(`http://api.openweathermap.org/geo/1.0/direct?q=${city.trim().toLowerCase()}&limit=5&appid=${process.env.OPENWEATHER_API_KEY}`);
     const avaliableCities: CityData = response.data;
-    console.log(avaliableCities);
     res.status(200).json( avaliableCities )
   }
   catch (error) {
