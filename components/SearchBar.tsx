@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios';
+import Link from 'next/link';
 
 export const SearchBar = () => {
      interface CityData {
@@ -21,10 +22,11 @@ export const SearchBar = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (query.trim().length === 0) {
+    if (query.trim().length === 0 || !availableCities ) {
       router.push("/")
     }
-    router.push(`/weather/${query.trim().toLowerCase()}`)
+
+    router.push(`/weather/${query.trim().toLowerCase()}?lat=${availableCities[0]?.lat}&lon=${availableCities[0]?.lon}`)
     setQuery('')
   }
 
@@ -79,23 +81,23 @@ export const SearchBar = () => {
           </button>
         </div>
       </form>
-      {
-        availableCities.length > 0 && (
-          <div className="mt-4">
-            <h2 className="text-black">Available Cities:</h2>
-            <ul className="list-disc list-inside">
 
-              {
-                  availableCities.map((city, i) => (
-                    <li key={i} className="text-black">{city.name}, {city.state} - {city.country}</li>
-                  )
-                )
-              }
-            </ul>
-          </div>
+        {availableCities.length > 0 && (
+        <div className="w-full max-w-sm mt-4">
+          <h2 className="text-black">Available Cities:</h2>
+          <ul className="list-disc list-inside">
+            {availableCities.map((city, i) => (
+              <li key={i} className="text-blue-500 hover:underline">
+                <Link href={{ pathname: `/weather/${city.name.toLowerCase()}`, query: { lat: city.lat, lon:city.lon } }}>
 
-        )
-      }
+                    {city.name}, {city.state} - {city.country}
+
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   )
 
