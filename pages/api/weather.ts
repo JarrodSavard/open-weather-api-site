@@ -69,9 +69,7 @@ export default async function handler(
     const lon: string = req.body.lon
     let units: string = req.body.units
 
-    if (units == 'celsius') {
-      units = 'metric'
-    } else {
+    if (!units) {
       units = 'imperial'
     }
 
