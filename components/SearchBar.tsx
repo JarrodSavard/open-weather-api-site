@@ -10,6 +10,9 @@ export const SearchBar = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (query.trim().length === 0) {
+      router.push("/")
+    }
     router.push(`/weather/${query.trim().toLowerCase()}`)
     setQuery('')
   }
