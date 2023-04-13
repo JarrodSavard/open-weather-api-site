@@ -1,5 +1,8 @@
 {
     "cSpell.words": [
         "avaliable"
-    ]
+    ],
+    "yaml.schemas": {
+        "https://json.schemastore.org/github-workflow.json": "file:///c%3A/Users/almos/Desktop/verify-test-pre/.github/workflows/deploy.yml"
+    }
 }

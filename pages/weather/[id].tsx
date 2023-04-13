@@ -199,7 +199,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   if (id) {
     try {
-      const response = await axios.post<WeatherData>('http://localhost:3000/api/weather', {
+      const response = await axios.post<WeatherData>(`${process.env.NEXT_PUBLIC_BASE_URL}/api/weather`, {
         lat,
         lon,
         units
