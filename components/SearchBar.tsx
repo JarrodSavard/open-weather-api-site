@@ -27,6 +27,12 @@ export const SearchBar = () => {
     }
 
     router.push(`/weather/${query.trim().toLowerCase()}?lat=${availableCities[0]?.lat}&lon=${availableCities[0]?.lon}`)
+    setAvailableCities([])
+    setQuery('')
+  }
+
+  const handleInputClearing = () => {
+    setAvailableCities([])
     setQuery('')
   }
 
@@ -61,7 +67,7 @@ export const SearchBar = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-start pt-24 w-screen shadow-md pb-24 ">
+    <div className="flex flex-col items-center justify-start py-10 w-screen shadow-md  ">
 
       <form className="w-full max-w-sm" onSubmit={handleSubmit}>
         <h1 className='text-black mb-2'>Enter a city name below to get the current weather:</h1>
@@ -87,9 +93,8 @@ export const SearchBar = () => {
           <h2 className="text-black">Available Cities:</h2>
           <ul className="list-disc list-inside">
             {availableCities.map((city, i) => (
-              <li key={i} className="text-blue-500 hover:underline">
-                <Link href={{ pathname: `/weather/${city.name.toLowerCase()}`, query: { lat: city.lat, lon:city.lon } }}>
-
+              <li key={i}  className="text-blue-500 hover:underline">
+                <Link onClick={handleInputClearing} href={{ pathname: `/weather/${city.name.toLowerCase()}`, query: { lat: city.lat, lon:city.lon } }}>
                     {city.name}, {city.state} - {city.country}
 
                 </Link>
