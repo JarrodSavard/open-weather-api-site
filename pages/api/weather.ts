@@ -4,6 +4,7 @@ import axios, { AxiosResponse } from 'axios';
 
 
 interface WeatherData {
+  error?: any;
   cod: string;
   message: number;
   cnt: number;
@@ -57,11 +58,15 @@ interface WeatherData {
     sunrise: number;
     sunset: number;
   };
+
 }
+
+
+
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<WeatherData>
+  res: NextApiResponse<WeatherData | Error>
 ) {
 
   try {
@@ -75,10 +80,12 @@ export default async function handler(
 
     const response: AxiosResponse<WeatherData> = await axios.get<WeatherData>(`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${units}&appid=${process.env.OPENWEATHER_API_KEY}`);
     const weatherInfo: WeatherData = response.data;
-    res.status(200).json( weatherInfo )
+    res.status(200).json(weatherInfo);
+  } catch (error: any) {
+    const errorMessage: Error = {
+      name: "Weather API Error",
+      message: error.message,
+      };
+    res.status(500).json(errorMessage);
   }
-  catch (error) {
-    console.error(error)
-  }
-
 }

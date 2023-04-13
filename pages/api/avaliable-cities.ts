@@ -2,7 +2,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import axios, { AxiosResponse } from 'axios';
 
-interface CityData {
+export interface CityData {
+  error?: any;
   city: {
     id: number;
     name: string;
@@ -20,7 +21,7 @@ interface CityData {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<CityData>
+  res: NextApiResponse<CityData | Error>
 ) {
 
     try {
@@ -29,8 +30,12 @@ export default async function handler(
     const avaliableCities: CityData = response.data;
     res.status(200).json( avaliableCities )
   }
-  catch (error) {
-    console.error(error)
+  catch (error: any) {
+     const errorMessage: Error = {
+      name: "Avaliable Cities API Error",
+      message: error.message,
+      };
+    res.status(500).json(errorMessage);
   }
 
 }
