@@ -151,7 +151,7 @@ const formatDate = (date: string, showDate: boolean = true) => {
                 <div className="grid grid-cols-1 w-full text-center md:grid-cols-2 md:w-auto md:text-start gap-2">
                   <div className="bg-gray-300 p-2 rounded-md">
                     <p className="text-sm font-bold">Wind Speed</p>
-                    <p className="text-lg">{data.wind.speed}m/s</p>
+                    <p className="text-lg">{data.wind.speed}mph</p>
                   </div>
                   <div className="bg-gray-300 p-2 rounded-md">
                     <p className="text-sm font-bold">Wind Angle</p>
@@ -159,7 +159,7 @@ const formatDate = (date: string, showDate: boolean = true) => {
                   </div>
                   <div className="bg-gray-300 p-2 rounded-md">
                     <p className="text-sm font-bold">Wind Gust</p>
-                    <p className="text-lg">{data.wind.gust}m/s</p>
+                    <p className="text-lg">{data.wind.gust}mph</p>
                   </div>
 
                   <div className="bg-gray-300 p-2 rounded-md">
