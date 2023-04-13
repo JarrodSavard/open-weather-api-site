@@ -55,7 +55,7 @@ export const SearchBar = () => {
           setAvailableCities(response.data);
         })
 
-    }, 500)
+    }, 200)
 
     setTimer(newTimer)
   }
