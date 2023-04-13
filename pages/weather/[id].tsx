@@ -63,20 +63,65 @@ interface WeatherData {
 
 const WeatherPage = ({weatherData}: {weatherData: WeatherData}) => {
 
+  //format date from yyy-mm-dd hh:mm:ss to mm/dd/yyyy hh:mm:ss
+  const formatDate = (date: string) => {
+    const dateArray = date.split(' ')
+    const datePart = dateArray[0].split('-')
+    const timePart = dateArray[1].split(':')
+    return (`${datePart[1]}-${datePart[2]}-${datePart[0]} ${timePart[0]}:${timePart[1]}:${timePart[2]}`)
+  }
+
+// capitalize first letter in each word
+  const capitalize = (str: string) => {
+    return str.replace(/\w\S*/g, (txt) => {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  };
+
+
+
   return (
     <>
       <Head>
         <title>Weather: {weatherData?.city.name}</title>
       </Head>
-    <div className='w-full text-center mt-10'>
-      {weatherData ?
-        <div>
-          <h1>{weatherData.city.name}</h1>
-          <p>Temperature: {weatherData.list[0].main.temp}°F</p>
-          <p>Description: {weatherData.city.population}</p>
-        </div> :
-        <p>Loading...</p>
-      }
+      <div className="flex justify-center items-center min-h-screen bg-gray-100 pt-4">
+
+      <div className="max-w-2xl w-full p-8 bg-white rounded shadow-md">
+        {weatherData ? (
+          <>
+      <div className="text-center mb-8">
+        <h2 className="text-2xl font-bold">
+          {weatherData.city.name}, {weatherData.city.country}
+        </h2>
+              </div>
+              {console.log(weatherData)}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {weatherData.list.map((data) => (
+          <div
+            key={data.dt}
+            className="bg-gray-200 rounded-lg p-4 flex flex-col justify-center items-center"
+          >
+            <p className="text-gray-500">{formatDate(data.dt_txt)}</p>
+            <div className="flex items-center justify-center mb-4">
+              <img
+                src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`}
+                alt="Weather Icon"
+                className="w-16 h-16"
+              />
+              <p className="text-2xl font-bold ml-4">{data.main.temp}°F</p>
+            </div>
+            <p className="text-gray-500 text-2xl mb-4">{capitalize(data.weather[0].description)}</p>
+            <p>Wind: {data.wind.speed}m/s</p>
+            <p>Humidity: {data.main.humidity}%</p>
+          </div>
+        ))}
+      </div>
+    </>
+        ) : (
+          <p>Loading...</p>
+        )}
+      </div>
     </div>
     </>
   );
