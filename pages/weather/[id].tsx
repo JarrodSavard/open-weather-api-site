@@ -1,6 +1,5 @@
-import React, { FC, useEffect, useState } from 'react';
+import React from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { GetServerSideProps } from 'next'
 
@@ -74,7 +73,7 @@ const WeatherPage = ({weatherData}: {weatherData: WeatherData}) => {
 // capitalize first letter in each word
   const capitalize = (str: string) => {
     return str.replace(/\w\S*/g, (txt) => {
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase();
     });
   };
 
