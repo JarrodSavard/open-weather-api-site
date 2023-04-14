@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { GetServerSideProps } from 'next'
 import Image from 'next/image';
 
-interface WeatherData {
+export interface WeatherData {
   cod: string;
   message: number;
   cnt: number;
