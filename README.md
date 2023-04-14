@@ -27,7 +27,7 @@ To run this application on your local machine, follow these steps:
 1. Clone the repository:
 
 ```
-git clone https://github.com/username/repo-name.git
+git clone https://github.com/username/open-weather-api-site.git
 ```
 
 2. Install the dependencies:
