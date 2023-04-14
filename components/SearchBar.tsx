@@ -18,7 +18,13 @@ export const SearchBar = () => {
   const [query, setQuery] = useState('')
   const [timer, setTimer] = useState<number | null>(null)
   const [availableCities, setAvailableCities] = useState<CityData[]>([])
+  const [error, setError] = useState(false)
   const router = useRouter()
+
+  const resetQuery = () => {
+    setQuery('')
+    setAvailableCities([])
+  }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -26,28 +32,36 @@ export const SearchBar = () => {
     if (query.trim().length === 0 || !availableCities ) {
       router.push("/")
     }
-    try {
-
+      if (timer) {
+      window.clearTimeout(timer)
+      }
       axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/avaliable-cities`, {
         city: query.trim().toLowerCase(),
       })
         .then((response) => {
           setAvailableCities(response.data);
-      })
-    } catch (error) {
-      console.error(error)
-      alert('An error occurred while fetching the data. Please try again later.')
+        }).catch(err => {
+          setError(true)
+          resetQuery()
+        }
+      )
+
+
+    if (availableCities[0] != undefined) {
+      router.push(`/weather/${query.trim().toLowerCase()}?lat=${availableCities[0]?.lat}&lon=${availableCities[0]?.lon}`)
+      resetQuery()
+    } else {
+      setError(true)
+      setTimeout(() => {
+        setError(false)
+      }, 3000)
+
+      resetQuery();
     }
-
-
-    router.push(`/weather/${query.trim().toLowerCase()}?lat=${availableCities[0]?.lat}&lon=${availableCities[0]?.lon}`)
-    setAvailableCities([])
-    setQuery('')
   }
 
   const handleInputClearing = () => {
-    setAvailableCities([])
-    setQuery('')
+    resetQuery()
   }
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,7 +72,6 @@ export const SearchBar = () => {
     if (timer) {
       window.clearTimeout(timer)
     }
-
 
     // Start a new timer
     const newTimer = window.setTimeout(() => {
@@ -71,7 +84,6 @@ export const SearchBar = () => {
         city: inputValue.trim().toLowerCase(),
       })
         .then((response) => {
-          console.log(response.data)
           setAvailableCities(response.data);
         })
 
@@ -80,7 +92,15 @@ export const SearchBar = () => {
     setTimer(newTimer)
   }
 
+
+
   return (
+    <>
+      {error && (
+        <div className="text-center py-2 bg-gray-400">
+          <h1 className="text-black text-xl">City Not Found</h1>
+      </div>
+      )}
     <div className="flex flex-col items-center justify-start py-10 w-screen shadow-md  ">
 
       <form className="w-full max-w-sm" onSubmit={handleSubmit}>
@@ -102,7 +122,7 @@ export const SearchBar = () => {
         </div>
       </form>
 
-        {availableCities.length > 0 && (
+        { availableCities.length > 0 && (
         <div className="w-full max-w-sm mt-4">
           <h2 className="text-black">Available Cities:</h2>
           <ul className="list-disc list-inside">
@@ -118,6 +138,7 @@ export const SearchBar = () => {
         </div>
       )}
     </div>
+    </>
   )
 
 }
