@@ -86,6 +86,6 @@ export default async function handler(
       message: error.message,
 
       };
-    res.status(error.status).json(errorMessage);
+    res.status(500).json(errorMessage);
   }
 }
