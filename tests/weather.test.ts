@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
-import handler from './weather';
+import handler from '../pages/api/weather';
 import {jest, expect} from '@jest/globals';
 
 jest.mock('axios');

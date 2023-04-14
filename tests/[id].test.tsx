@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import WeatherPage, { WeatherData } from "./[id]";
+import WeatherPage, { WeatherData } from "../pages/weather/[id]";
 import {expect } from "@jest/globals";
 
 const mockWeatherData: WeatherData = {

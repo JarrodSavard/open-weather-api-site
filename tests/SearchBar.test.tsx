@@ -1,8 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import {SearchBar} from './SearchBar'
+import {SearchBar} from '../components/SearchBar'
 import { useRouter } from 'next/router'
 import React from 'react'
-
 
 // Create a fake useRouter hook
 jest.mock('next/router', () => ({

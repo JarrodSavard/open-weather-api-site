@@ -1,11 +1,9 @@
-import axios from 'axios';
-import handler, {CityData} from './avaliable-cities';
+import mws from 'mws';
+import handler, { CityData } from '../pages/api/avaliable-cities';
 import { jest, expect } from '@jest/globals';
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-
-
-jest.mock('axios');
+jest.mock('mws');
 
 const mockCityData: CityData = {
   city: [
@@ -60,7 +58,7 @@ describe('City API endpoint', () => {
   });
 
   it('returns city information from the OpenWeatherMap API', async () => {
-    (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValueOnce({
+    mws.mockResolvedValueOnce({
       data: mockCityData,
     });
 
@@ -72,12 +70,11 @@ describe('City API endpoint', () => {
 
   it('handles errors gracefully', async () => {
     const mockError = new Error('Failed to fetch city data');
-    (axios.get as jest.MockedFunction<typeof axios.get>).mockRejectedValueOnce(mockError);
+    mws.mockRejectedValueOnce(mockError);
 
     await handler(req, res);
 
     expect(res.status).toHaveBeenCalledWith(500);
     expect(mockJson).toHaveBeenCalledWith({name:"Avaliable Cities API Error", message: 'Failed to fetch city data' });
-
   });
 });
