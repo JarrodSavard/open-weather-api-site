@@ -35,7 +35,7 @@ export default async function handler(
       name: "Avaliable Cities API Error",
       message: error.message,
       };
-    res.status(error.status).json(errorMessage);
+    res.status(500).json(errorMessage);
   }
 
 }
