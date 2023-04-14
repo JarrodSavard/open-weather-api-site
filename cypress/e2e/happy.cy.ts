@@ -67,6 +67,23 @@ describe('Full Site Happy Test', () => {
       cy.get('button[type="submit"]').should('be.visible')
     })
 
+    it('redirects to weather page when city is found and clicked', () => {
+    cy.intercept('POST', '**/api/avaliable-cities', {
+      statusCode: 200,
+      body: [{ name: 'New York', lat: 40.7128, lon: -74.006 }],
+    }).as('getCity')
+
+    cy.get('input[type="text"]').type('new york')
+    cy.contains('Search').click()
+
+    cy.wait('@getCity')
+    cy.get('li').contains('New York').click()
+
+    cy.url().should('include', '/weather/new%20york')
+
+  })
+
+
 
   })
 

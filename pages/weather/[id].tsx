@@ -216,13 +216,17 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       console.error(error)
 
       return {
-        notFound: true,
+        props: {
+          weatherData: false,
+        }
       }
     }
   }
 
   return {
-    notFound: true,
+    props: {
+          weatherData: false,
+        }
   }
 }
 

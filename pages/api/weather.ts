@@ -84,7 +84,8 @@ export default async function handler(
     const errorMessage: Error = {
       name: "Weather API Error",
       message: error.message,
+
       };
-    res.status(500).json(errorMessage);
+    res.status(error.status).json(errorMessage);
   }
 }
