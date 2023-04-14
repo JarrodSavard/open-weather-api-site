@@ -22,9 +22,23 @@ export const SearchBar = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
     if (query.trim().length === 0 || !availableCities ) {
       router.push("/")
     }
+    try {
+
+      axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/avaliable-cities`, {
+        city: query.trim().toLowerCase(),
+      })
+        .then((response) => {
+          setAvailableCities(response.data);
+      })
+    } catch (error) {
+      console.error(error)
+      alert('An error occurred while fetching the data. Please try again later.')
+    }
+
 
     router.push(`/weather/${query.trim().toLowerCase()}?lat=${availableCities[0]?.lat}&lon=${availableCities[0]?.lon}`)
     setAvailableCities([])
