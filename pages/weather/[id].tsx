@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import Head from 'next/head';
 import { GetServerSideProps } from 'next'
-import Image from 'next/image';
-
+import { Card } from '@/components/Card';
+import { formatDate } from '@/utils/formatDate';
 export interface WeatherData {
   cod: string;
   message: number;
@@ -80,28 +80,6 @@ const WeatherPage = ({weatherData}: {weatherData: WeatherData}) => {
     setCurrentPage(pageNumber);
   };
 
-  //format date to readable format
-const formatDate = (date: string, showDate: boolean = true) => {
-  const dateObj = new Date(date);
-  const hours = dateObj.getHours();
-  const minutes = dateObj.getMinutes();
-  const ampm = hours >= 12 ? 'pm' : 'am';
-  const formattedTime = `${hours % 12 || 12}:${minutes < 10 ? '0' : ''}${minutes} ${ampm}`;
-  return showDate ? ` ${dateObj.toDateString()} (${formattedTime})` : formattedTime;
-};
-
-
-
-
-// capitalize first letter in each word
-  const capitalize = (str: string) => {
-    return str.replace(/\w\S*/g, (txt) => {
-      return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase();
-    });
-  };
-
-
-
   return (
     <>
       <Head>
@@ -130,44 +108,19 @@ const formatDate = (date: string, showDate: boolean = true) => {
 
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-8">
-            {currentItems.map((data) => (
-              <div
-                key={data.dt}
-                className="bg-gray-200 rounded-lg p-4 flex flex-col justify-center items-center"
-              >
-                <p className="text-gray-500">{formatDate(data.dt_txt)}</p>
-                <div className="flex items-center justify-center mb-4">
-                 <Image
-                  src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`}
-                  alt="Weather Icon"
-                  width={64}
-                  height={64}
-                />
-                  <p className="text-2xl font-bold ml-4">{data.main.temp}°F</p>
-                </div>
-                <p className="text-gray-500 text-2xl mb-4">
-                  {capitalize(data.weather[0].description)}
-                </p>
-                <div className="grid grid-cols-1 w-full text-center md:grid-cols-2 md:w-auto md:text-start gap-2">
-                  <div className="bg-gray-300 p-2 rounded-md">
-                    <p className="text-sm font-bold">Wind Speed</p>
-                    <p className="text-lg">{data.wind.speed}mph</p>
-                  </div>
-                  <div className="bg-gray-300 p-2 rounded-md">
-                    <p className="text-sm font-bold">Wind Angle</p>
-                    <p className="text-lg">{data.wind.deg}&deg;</p>
-                  </div>
-                  <div className="bg-gray-300 p-2 rounded-md">
-                    <p className="text-sm font-bold">Wind Gust</p>
-                    <p className="text-lg">{data.wind.gust}mph</p>
-                  </div>
-
-                  <div className="bg-gray-300 p-2 rounded-md">
-                    <p className="text-sm font-bold">Humidity</p>
-                    <p className="text-lg">{data.main.humidity}%</p>
-                  </div>
-                </div>
+                {currentItems.map((data) => (
+                  <div key = {data.dt}>
+                    <Card
+                      dt_text={data.dt_txt}
+                      icon={data.weather[0].icon}
+                      temp={data.main.temp}
+                      description={data.weather[0].description}
+                      wind_speed={data.wind.speed}
+                      wind_deg={data.wind.deg}
+                      wind_gust={data.wind.gust}
+                      humidity={data.main.humidity} />
               </div>
+
             ))}
           </div>
          <div className="flex justify-center mt-8">
