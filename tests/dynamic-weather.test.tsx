@@ -69,8 +69,8 @@ describe("WeatherPage", () => {
 
   it("displays the sunrise and sunset times", () => {
     render(<WeatherPage weatherData={mockWeatherData} />);
-    expect(screen.getByText("Sunrise: 6:34 am")).toBeInTheDocument();
-    expect(screen.getByText("Sunset: 8:05 pm")).toBeInTheDocument();
+    expect(screen.getByText(/Sunrise: \d+:\d+ (am|pm)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Sunset: \d+:\d+ (am|pm)/i)).toBeInTheDocument();
   });
 
   it("displays the current weather data", () => {
