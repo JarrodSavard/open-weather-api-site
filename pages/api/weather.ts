@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import axios, { AxiosResponse } from 'axios';
 
 
-interface WeatherData {
+export interface WeatherData {
   error?: any;
   cod: string;
   message: number;
@@ -62,16 +62,17 @@ interface WeatherData {
 
 
 
-
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<WeatherData | Error>
+  res: NextApiResponse<WeatherData | {name:String, message:String}>
 ) {
 
   try {
     const lat: string = req.body.lat
     const lon: string = req.body.lon
     let units: string = req.body.units
+
+
 
     if (!units) {
       units = 'imperial'
@@ -80,12 +81,17 @@ export default async function handler(
     const response: AxiosResponse<WeatherData> = await axios.get<WeatherData>(`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${units}&appid=${process.env.OPENWEATHER_API_KEY}`);
     const weatherInfo: WeatherData = response.data;
     res.status(200).json(weatherInfo);
+    if (!lat || !lon) {
+
+      res.status(400).json({name:"Weather API Error", message: 'Missing latitude or longitude' });
+      return;
+    }
   } catch (error: any) {
-    const errorMessage: Error = {
+
+    res.status(500).json({
       name: "Weather API Error",
       message: error.message,
-
-      };
-    res.status(500).json(errorMessage);
+      });
   }
 }
+

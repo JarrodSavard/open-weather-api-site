@@ -1,40 +1,40 @@
-import mws from 'mws';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 import handler, { CityData } from '../pages/api/avaliable-cities';
 import { jest, expect } from '@jest/globals';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next'
+import axios from 'axios';
 
-jest.mock('mws');
+const server = setupServer(
+  rest.get('http://api.openweathermap.org/geo/1.0/direct', (req, res, ctx) => {
+    const city = req.url.searchParams.get('q');
+    if (city === 'london') {
+      return res(ctx.json({
+        city: [
+          {
+            id: 2643743,
+            name: 'London',
+            coord: {
+              lat: 51.5085,
+              lon: -0.1257,
+            },
+            country: 'GB',
+            population: 1000000,
+            timezone: 3600,
+            sunrise: 1627003989,
+            sunset: 1627058708,
+          },
+        ],
+      }));
+    } else {
+      return res(ctx.status(404));
+    }
+  })
+);
 
-const mockCityData: CityData = {
-  city: [
-    {
-      id: 2643743,
-      name: 'London',
-      coord: {
-        lat: 51.5085,
-        lon: -0.1257,
-      },
-      country: 'GB',
-      population: 1000000,
-      timezone: 3600,
-      sunrise: 1627003989,
-      sunset: 1627058708,
-    },
-    {
-      id: 5128581,
-      name: 'New York',
-      coord: {
-        lat: 40.7143,
-        lon: -74.006,
-      },
-      country: 'US',
-      population: 10000000,
-      timezone: -14400,
-      sunrise: 1626983228,
-      sunset: 1627035912,
-    },
-  ],
-};
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 describe('City API endpoint', () => {
   let req: NextApiRequest;
@@ -46,35 +46,47 @@ describe('City API endpoint', () => {
       body: {
         city: 'london',
       },
-    } as NextApiRequest;
+    } as unknown as NextApiRequest;
     mockJson = jest.fn();
     res = {
       status: jest.fn().mockReturnValue({ json: mockJson }),
-    } as unknown as NextApiResponse<CityData>;
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
+    } as unknown as NextApiResponse<CityData | Error>;
   });
 
   it('returns city information from the OpenWeatherMap API', async () => {
-    mws.mockResolvedValueOnce({
-      data: mockCityData,
-    });
-
     await handler(req, res);
-
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(mockJson).toHaveBeenCalledWith(mockCityData);
+    expect(mockJson).toHaveBeenCalledWith({
+      city: [
+        {
+          id: 2643743,
+          name: 'London',
+          coord: {
+            lat: 51.5085,
+            lon: -0.1257,
+          },
+          country: 'GB',
+          population: 1000000,
+          timezone: 3600,
+          sunrise: 1627003989,
+          sunset: 1627058708,
+        },
+      ],
+    });
   });
 
   it('handles errors gracefully', async () => {
-    const mockError = new Error('Failed to fetch city data');
-    mws.mockRejectedValueOnce(mockError);
-
+    const errorMessage = {
+      name: 'Avaliable Cities API Error',
+      message: 'Request failed with status code 404',
+    };
+    server.use(
+      rest.get('http://api.openweathermap.org/geo/1.0/direct', (req, res, ctx) => {
+        return res(ctx.status(404));
+      })
+    );
     await handler(req, res);
-
     expect(res.status).toHaveBeenCalledWith(500);
-    expect(mockJson).toHaveBeenCalledWith({name:"Avaliable Cities API Error", message: 'Failed to fetch city data' });
+    expect(mockJson).toHaveBeenCalledWith(errorMessage);
   });
 });

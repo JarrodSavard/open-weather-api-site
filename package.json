@@ -44,5 +44,8 @@
     "msw": "^1.2.1",
     "ts-jest": "^29.1.0",
     "typescript": "^5.0.4"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }
