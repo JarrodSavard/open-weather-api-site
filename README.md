@@ -20,6 +20,12 @@ This project is a weather application that uses the OpenWeatherMap API to genera
 
 -   **Axios**: A promise-based HTTP client for making API requests.
 
+-   **Jest**: A JavaScript testing framework for unit testing.
+
+-   **Cypress**: An end-to-end testing framework for testing web applications.
+
+-   **MSW (Mock Service Worker)**: A library for mocking server requests and responses in your tests.
+
 ## Installation
 
 To run this application on your local machine, follow these steps:
@@ -39,7 +45,8 @@ npm install
 3. Set up your environment variables:
 
 ```
-API_KEY=your_api_key_here
+OPENWEATHER_API_KEY=your_api_key_here
+NEXT_PUBLIC_BASE_URL=your_base_url_here
 ```
 
 4. Start the development server:
