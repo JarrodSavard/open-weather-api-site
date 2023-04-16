@@ -27,8 +27,7 @@
     "test-jest": "^1.0.1"
   },
   "devDependencies": {
-    "@babel/plugin-transform-react-jsx": "^7.21.0",
-    "@babel/preset-typescript": "^7.21.4",
+
     "@jest/globals": "^29.5.0",
     "@jest/types": "^29.5.0",
     "@testing-library/jest-dom": "^4.2.4",
