@@ -5,15 +5,15 @@ describe('Full Site Happy Test', () => {
     })
 
     it('should display the correct page title', () => {
-      cy.title().should('contain', 'Verify Test Application')
+      cy.title().should('contain', 'Weather Search Application')
     })
 
     it('should display the correct header text', () => {
-      cy.get('h1').should('contain', 'Verify Test Application')
+      cy.get('h1').should('contain', 'Weather Search Application')
     })
 
     it('should display the correct body text', () => {
-      cy.get('p').should('contain', 'Welcome to the Verify Test Application!')
+      cy.get('p').should('contain', 'Welcome to the Weather Search Application!')
     })
 
     it('should display the correct list items', () => {

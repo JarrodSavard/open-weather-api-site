@@ -5,15 +5,15 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Verify Test Application</title>
+        <title>Weather Search Application</title>
       </Head>
     <div className="py-10 ">
       <header className="bg-white p-6 ">
-        <h1 className="text-2xl font-bold text-gray-900">Verify Test Application</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Weather Search Application</h1>
       </header>
       <main className="p-6">
         <p className="text-gray-700 mb-4">
-          Welcome to the Verify Test Application! This site allows you to get current weather information for any city around the world using the OpenWeatherAPI.
+          Welcome to the Weather Search Application! This site allows you to get current weather information for any city around the world using the OpenWeatherAPI.
         </p>
         <p className="text-gray-700 mb-4">{`Here's`} how it works:</p>
         <ol className="list-decimal ml-6 mb-4">

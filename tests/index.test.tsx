@@ -6,7 +6,7 @@ import {expect }from "@jest/globals";
 describe("Home", () => {
   it("renders the header text", () => {
     render(<Home />);
-    expect(screen.getByText("Verify Test Application")).toBeInTheDocument();
+    expect(screen.getByText("Weather Search Application")).toBeInTheDocument();
   });
 
   it("renders the feature list", () => {
@@ -25,7 +25,7 @@ describe("Home", () => {
 
   it("renders the welcome text", () => {
     render(<Home />);
-    expect(screen.getByText("Welcome to the Verify Test Application! This site allows you to get current weather information for any city around the world using the OpenWeatherAPI.")).toBeInTheDocument();
+    expect(screen.getByText("Welcome to the Weather Search Application! This site allows you to get current weather information for any city around the world using the OpenWeatherAPI.")).toBeInTheDocument();
 });
 it("renders how it works text", () => {
     render(<Home />);
